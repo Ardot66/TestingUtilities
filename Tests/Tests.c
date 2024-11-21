@@ -1,3 +1,4 @@
+#define TESTING_UTILITIES_VERBOSE
 #include "TestingUtilities.h"
 #include <stdlib.h>
 
