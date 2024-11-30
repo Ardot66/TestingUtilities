@@ -7,8 +7,10 @@
 #define TEST_BASE(a, comparer, b, onPass, onFail)\
 {\
     const char *expressionString = #a " " #comparer " " #b; \
+    void *valueA = (void *)a;\
+    void *valueB = (void *)b;\
     TestsCount++; \
-    if((a) comparer (b)) \
+    if((valueA) comparer (valueB)) \
     {\
         onPass\
         TestsPassed ++;\
@@ -29,13 +31,13 @@
 
 #ifdef TESTING_UTILITIES_VERBOSE
 #define TEST(a, comparer, b, pattern, ...) TEST_BASE(a, comparer, b, \
-    TEST_VERBOSE("Test Passed", a, b, pattern),\
-    TEST_VERBOSE("Test Failed", a, b, pattern) __VA_ARGS__)
+    TEST_VERBOSE("Test Passed", valueA, valueB, pattern),\
+    TEST_VERBOSE("Test Failed", valueA, valueB, pattern) __VA_ARGS__)
 
 #else
 #define TEST(a, comparer, b, pattern, ...) TEST_BASE(a, comparer, b, \
     , \
-    TEST_VERBOSE("Test Failed", a, b, pattern) __VA_ARGS__)
+    TEST_VERBOSE("Test Failed", valueA, valueB, pattern) __VA_ARGS__)
 
 #endif
 
