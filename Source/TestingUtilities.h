@@ -7,8 +7,8 @@
 #define TEST_BASE(a, comparer, b, onPass, onFail)\
 {\
     const char *expressionString = #a " " #comparer " " #b; \
-    void *valueA = (void *)a;\
-    void *valueB = (void *)b;\
+    uintptr_t valueA = (uintptr_t)a;\
+    uintptr_t valueB = (uintptr_t)b;\
     TestsCount++; \
     if((valueA) comparer (valueB)) \
     {\
