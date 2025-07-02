@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stddef.h>
+#include <inttypes.h>
 
 #define TEST_BASE(a, comparer, b, onPass, onFail)\
 {\
@@ -21,7 +22,7 @@
     }\
 }
 
-#define TEST_VERBOSE(message, a, b, pattern) printf(message ": %s; Values are %" #pattern ", %" #pattern "; at %s line %d\n", expressionString, a, b, __FILE__, __LINE__);
+#define TEST_VERBOSE(message, a, b) printf(message ": %s; Values are %"PRIuPTR", %"PRIuPTR"; at %s line %d\n", expressionString, a, b, __FILE__, __LINE__);
 
 // Docs for TEST:
 // Defines a test which compares expressions [a] and [b] with the comparer [comparer] and prints the result.
@@ -31,13 +32,13 @@
 
 #ifdef TESTING_UTILITIES_VERBOSE
 #define TEST(a, comparer, b, pattern, ...) TEST_BASE(a, comparer, b, \
-    TEST_VERBOSE("Test Passed", valueA, valueB, pattern),\
-    TEST_VERBOSE("Test Failed", valueA, valueB, pattern) __VA_ARGS__)
+    TEST_VERBOSE("Test Passed", valueA, valueB),\
+    TEST_VERBOSE("Test Failed", valueA, valueB) __VA_ARGS__)
 
 #else
-#define TEST(a, comparer, b, pattern, ...) TEST_BASE(a, comparer, b, \
+#define TEST(a, comparer, b, ...) TEST_BASE(a, comparer, b, \
     , \
-    TEST_VERBOSE("Test Failed", valueA, valueB, pattern) __VA_ARGS__)
+    TEST_VERBOSE("Test Failed", valueA, valueB) __VA_ARGS__)
 
 #endif
 
