@@ -42,7 +42,7 @@
 
 #endif
 
-#define TEST(a, comparer, b, ...) TEST_TYPED(a, comparer, b, intptr_t, PRIuPTR, __VA_ARGS__)
+#define TEST(a, comparer, b, ...) TEST_TYPED(a, comparer, b, intptr_t, PRIdPTR, __VA_ARGS__)
 
 // Marks the end of a testing program and prints the number of tests passed and failed.
 #define TestsEnd() printf("Testing complete, %llu out of %llu tests passed.\n", TestsPassed, TestsCount)
