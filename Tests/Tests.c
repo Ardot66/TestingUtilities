@@ -4,8 +4,8 @@
 
 int main(int argCount, char **argValues)
 {
-    TEST(10ull, ==, 10ull, llu, exit(1);)
-    TEST(9ull, ==, 10ull, llu)
+    TEST(10ull, ==, 10ull, exit(1);)
+    TEST(9ull, ==, 10ull)
 
     TestsEnd();
     

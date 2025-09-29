@@ -3,12 +3,13 @@
 
 #include <stdio.h>
 #include <stddef.h>
+#include <inttypes.h>
 
-#define TEST_BASE(a, comparer, b, onPass, onFail)\
+#define TEST_BASE(a, comparer, b, type, onPass, onFail)\
 {\
     const char *expressionString = #a " " #comparer " " #b; \
-    uintptr_t valueA = (uintptr_t)a;\
-    uintptr_t valueB = (uintptr_t)b;\
+    type valueA = (type)a;\
+    type valueB = (type)b;\
     TestsCount++; \
     if((valueA) comparer (valueB)) \
     {\
@@ -21,7 +22,7 @@
     }\
 }
 
-#define TEST_VERBOSE(message, a, b, pattern) printf(message ": %s; Values are %" #pattern ", %" #pattern "; at %s line %d\n", expressionString, a, b, __FILE__, __LINE__);
+#define TEST_VERBOSE(message, a, b, pattern) printf(message ": %s; Values are %" pattern ", %" pattern "; at %s line %d\n", expressionString, a, b, __FILE__, __LINE__);
 
 // Docs for TEST:
 // Defines a test which compares expressions [a] and [b] with the comparer [comparer] and prints the result.
@@ -30,16 +31,18 @@
 // An example use would be TEST(myValue, ==, 0, "%llu and %llu", return;)
 
 #ifdef TESTING_UTILITIES_VERBOSE
-#define TEST(a, comparer, b, pattern, ...) TEST_BASE(a, comparer, b, \
+#define TEST_TYPED(a, comparer, b, type, pattern, ...) TEST_BASE(a, comparer, b, type,\
     TEST_VERBOSE("Test Passed", valueA, valueB, pattern),\
     TEST_VERBOSE("Test Failed", valueA, valueB, pattern) __VA_ARGS__)
 
 #else
-#define TEST(a, comparer, b, pattern, ...) TEST_BASE(a, comparer, b, \
+#define TEST_TYPED(a, comparer, b, type, pattern, ...) TEST_BASE(a, comparer, b, type,\
     , \
     TEST_VERBOSE("Test Failed", valueA, valueB, pattern) __VA_ARGS__)
 
 #endif
+
+#define TEST(a, comparer, b, ...) TEST_TYPED(a, comparer, b, intptr_t, PRIuPTR, __VA_ARGS__)
 
 // Marks the end of a testing program and prints the number of tests passed and failed.
 #define TestsEnd() printf("Testing complete, %llu out of %llu tests passed.\n", TestsPassed, TestsCount)
